@@ -28,6 +28,7 @@ def run_sim(
     current_date: datetime.date,
     forecast_length: int,
     duration: int,
+    burn_boost: float,
     data: Dict,
     fil_plus_m: Union[float, jnp.array] = 10.0,
     qa_renew_relative_multiplier_vec: jnp.array = 1.0,
@@ -57,6 +58,8 @@ def run_sim(
         The length of the forecast, in days.
     duration: int
         Average sector duration.
+    burn_boost: float
+        float greater than 0 that scales daily burn amount
     data: Dict
         A dictionary of historical data. See `mechafil_jax.data` for more details.
     fil_plus_m: Union[float, jnp.array]
@@ -93,7 +96,7 @@ def run_sim(
     init_baseline_eib = data["init_baseline_eib"]
     circ_supply_zero = data["circ_supply_zero"]
     locked_fil_zero = data["locked_fil_zero"]
-    daily_burnt_fil = data["daily_burnt_fil"]
+    daily_burnt_fil = burn_boost * data["daily_burnt_fil"]
     burnt_fil_vec = data["burnt_fil_vec"]
     historical_renewal_rate = data["historical_renewal_rate"]
 
