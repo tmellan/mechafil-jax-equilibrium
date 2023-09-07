@@ -142,6 +142,7 @@ def forecast_circulating_supply(
     circ_supply_zero: float,
     locked_fil_zero: float,
     daily_burnt_fil: float,
+    burn_boost: float,
     duration: int,
     renewal_rate_vec: Union[jnp.array, NDArray],
     burnt_fil_vec: jnp.array,
@@ -174,7 +175,7 @@ def forecast_circulating_supply(
     day_idx_start = 1
     current_day_idx = current_day - start_day
     init_in = (day_idx_start, current_day_idx, cs_dict, known_scheduled_pledge_release_vec, 
-               circ_supply, daily_burnt_fil, len(burnt_fil_vec), renewal_rate_vec, duration, 
+               circ_supply, burn_boost * daily_burnt_fil, len(burnt_fil_vec), renewal_rate_vec, duration, 
                lock_target, gamma, gamma_weight_type)
     ret, _ = lax.scan(update_cs_day, init_in, None, length=sim_len)
     # ret, _ = imitate_lax.scan(update_cs_day, init_in, None, length=sim_len-1)  # for debugging and seeing print statements
